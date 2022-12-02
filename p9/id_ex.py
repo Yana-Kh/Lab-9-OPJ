@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import datetime
 import sys
 
 
@@ -21,13 +22,13 @@ if __name__ == '__main__':
             # Запросить данные о человеке.
             name = input("Фамилия и имя: ")
             phone = int(input("Номер телефона: +7"))
-            birthday = list(map(int, input("Дата рождения: ").split('.')))
-
+            bday = list(map(int, input("Дата рождения: ").split('.')))
+            d_bday = datetime.date(bday[2], bday[1], bday[0])
             # Создать словарь.
             human = {
                 'name': name,
                 'phone': phone,
-                'birthday': birthday
+                'birthday': d_bday
             }
 
             # Добавить словарь в список.
@@ -58,12 +59,10 @@ if __name__ == '__main__':
             # Вывести данные о всех сотрудниках.
             for idx, human in enumerate(peopls, 1):
                 print(
-                    '| {:>4} | {:<30} | {:<15} | {:>15} |'.format(
-                        idx,
-                        human.get('name', ''),
-                        human.get('phone', 0),
-                        ''.join(str(human.get('birthday')))
-                    )
+                    f'| {idx:>4} |'
+                    f' {human.get("name", ""):<30} |'
+                    f' {human.get("phone", 0):<15} |'
+                    f' {human.get("birthday")}      |'
                 )
 
             print(line)
@@ -71,17 +70,18 @@ if __name__ == '__main__':
         elif command == 'find':
             f = input('Введите фамилию: ')
             for human in peopls:
+                flag = 1
                 if f in str(human.values()):
+                    flag = 0
                     print('Запись найдена:')
                     print(
                         f"Имя: {human.get('name', '')} \n"
                         f"Номер: {human.get('phone', 0)} \n"
-                        f"День рождения: {human.get('birthday', 0)}"
-
+                        f"День рождения: {human.get('birthday')}"
                     )
                     continue
-                else:
-                    print('Запись не найдена')
+            if flag == 1:
+                print('Запись не найдена')
 
         elif command == 'help':
             # Вывести справку о работе с программой.
